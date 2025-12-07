@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import serverless from "serverless-http";
 import { 
   createEmergency,
   acceptEmergency,
   rejectEmergency
-} from "./controllers/emergencyController.js";
+} from "../controllers/emergencyController.js";
 
 dotenv.config();
 
@@ -17,8 +18,8 @@ app.post("/emergency", createEmergency);
 app.post("/emergency/:id/accept", acceptEmergency);
 app.post("/emergency/:id/reject", rejectEmergency);
 
-app.listen(5000, () => {
-  console.log("🚀 Server running at http://localhost:5000");
-});
+// ❌ Jangan pakai app.listen()
+// Vercel butuh export handler, bukan menjalankan server
+export const handler = serverless(app);
 
-
+export default app;
